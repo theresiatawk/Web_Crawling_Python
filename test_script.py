@@ -1,4 +1,30 @@
 import requests
-response = requests.get("https://lau.edu.lb")
 
-print(response.content)
+def subDomains(target_url):
+    subdomains = [] 
+    count = 0;
+    with open("./input_files/subdomains_dictionary.bat") as file:
+        for line in file:
+            
+            url = line.strip()
+            if url[len(url)-1] == "." :
+                continue 
+            print(url)
+            new_url = url +"."+ target_url
+            print(new_url)
+            response = ""
+            try: 
+                response = requests.get("http://" + new_url)
+                print(response)
+            except requests.exceptions.ConnectionError:
+                pass 
+            if response != "":
+                print(response)
+            if response != "": 
+                subdomains.append(new_url)
+    return subdomains
+
+url = "testphp.vulnweb.com"
+
+print(subDomains(url))
+# print(requests.get("https://" + url))
