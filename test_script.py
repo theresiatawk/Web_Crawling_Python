@@ -1,8 +1,14 @@
 import requests
+import sys
 
-def subDomains(target_url):
+if len(sys.argv) < 2:
+    print("Please provide the url")
+else: 
+    first_arg = sys.argv[1]
+    print("First arguemnt"+first_arg) 
+def testingSubDomains(target_url):
     subdomains = [] 
-    count = 0;
+    count = 0
     with open("./input_files/subdomains_dictionary.bat") as file:
         for line in file:
             
@@ -26,5 +32,5 @@ def subDomains(target_url):
 
 url = "testphp.vulnweb.com"
 
-print(subDomains(url))
-# print(requests.get("https://" + url))
+print(testingSubDomains(url))
+print(requests.get("https://" + url))
