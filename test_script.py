@@ -7,26 +7,28 @@ else:
     target_url = sys.argv[1]
     print("URL: "+target_url) 
 
+subdomains_output = []
+directories_output = []
+
 def testingSubdomains(target_url):
-    subdomains_output = []
     with open("./input_files/subdomains_dictionary.bat") as file:
         for line in file:  
-            url = line.strip()
-            if url[len(url)-1] == "." :
-                continue 
+            subdomain = line.strip()
+            url = ""
+            if subdomain[len(url)-1] == "." :
+                url = subdomain +""+ target_url
+            else:
+                url = subdomain +"."+ target_url
             print(url)
-            new_url = url +"."+ target_url
-            print(new_url)
             response = ""
             try: 
-                response = requests.get("http://" + new_url)
-                print(response)
+                response = requests.get("http://" + url)
             except requests.exceptions.ConnectionError:
                 pass 
             if response != "":
-                print(response)
-            if response != "": 
-                subdomains_output.append(new_url)
+                print("Subdomain found: " + ", ".join(response))
+                subdomains_output.append(url)
+                print("FOUND SO FAR: "+subdomains_output)
 
     with open("./subdomains_output.bat", "a") as subdomains_file:
         for element in subdomains_output:
