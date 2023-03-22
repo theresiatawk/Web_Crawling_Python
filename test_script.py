@@ -1,6 +1,7 @@
 import requests
 import sys
 import re
+import random
 
 
 # Initializing empty arrays
@@ -93,6 +94,9 @@ else:
 # Bonus part
 
 url = "https://requestswebsite.notanothercoder.repl.co/confirm-login"
+chars = "abcdefghijklmnopqrstuvwxyz0123456789"
+username="admin"
+
 
 def send_request(username, password): 
     form_data = {
@@ -103,3 +107,16 @@ def send_request(username, password):
     print(response.text)
 
 send_request("1","1")
+
+def password_generator():
+    while True:
+        random_pass = random.choices(chars, k=random.randint(1,17))
+        print("Random Password = "+ random_pass)
+        password = "".join(random_pass)
+        print("Password = "+password)
+        response = send_request(username, password)
+
+        if 'failed to login' in response.text.lower():
+            print("Incorrect" +password)
+        else: 
+            print("Correct Password"+password+"\n")
