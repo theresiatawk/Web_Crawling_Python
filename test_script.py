@@ -12,7 +12,7 @@ directories_output = []
 
 def testingSubdomains(target_url):
     try: 
-        requests.get("https://"+target_url)
+        requests.get("http://"+target_url)
         with open("./input_files/subdomains_dictionary_copy.bat") as file:
             for line in file: 
                 subdomain = line.strip()
@@ -37,7 +37,15 @@ def testingSubdomains(target_url):
         print("No such domain")
     return subdomains_output
 
-url = "google.com"
+def fetshingHTML(target_url):
+    try:
+        response = requests.get("http://"+target_url)
+        print(response.content)
+    except requests.exceptions.ConnectionError:
+        print("No such domain")
 
-print(testingSubdomains(url))
-print(requests.get("https://" + url))
+url1 = "google.com"
+url2 = "testphp.vulnweb.com"
+# print(testingSubdomains(url1))
+fetshingHTML(url2)
+# print(requests.get("https://" + url))
