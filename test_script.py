@@ -1,19 +1,18 @@
 import requests
 import sys
 import re
-from urllib.parse import urljoin
 
-if len(sys.argv) < 2:
-    print("Please provide the url")
-else: 
-    target_url = sys.argv[1]
-    print("URL: "+target_url) 
 
 subdomains_output = []
 directories_output = []
+files_output = []
 
+open("./subdomains_output.bat", "w").close()
+open("./directories_output.bat", "w").close()
+open("./files_output.bat", "w").close()
+
+    
 def testingSubdomains(target_url):
-    open("./subdomains_output.bat", "w").close()
     try: 
         requests.get("http://"+target_url)
         input_file =  open("./input_files/subdomains_dictionary.bat", "r")
@@ -41,7 +40,6 @@ def testingSubdomains(target_url):
     return subdomains_output
 
 def testingDirectories(target_url):
-    open("./directories_output.bat", "w").close()
     try:
         requests.get("http://"+target_url)
         input_file =  open("./input_files/dirs_dictionary.bat", "r")
@@ -55,6 +53,7 @@ def testingDirectories(target_url):
                 if response.status_code == 200:
                     directories_output.append(url)
                     directories_output_file.write(url +"\n")
+                    print(fetchingFiles(url))
                     print(f"This directory {url} exist !!!!!!!!!!!!!!!")
                     print(directories_output)
             except requests.exceptions.ConnectionError:
@@ -62,12 +61,11 @@ def testingDirectories(target_url):
         input_file.close()
         directories_output_file.close()
     except requests.exceptions.ConnectionError:
-        print("No such domain")
+        print("No such directory")
     return directories_output
     
 
-def fetshingFiles(target_url):
-    open("./files_output.bat", "w").close()
+def fetchingFiles(target_url):
     files_output_file = open("./files_output.bat", "a")
     try:
         response = requests.get("http://"+target_url)
@@ -77,10 +75,12 @@ def fetshingFiles(target_url):
         files_output_file.close()
         return links
     except requests.exceptions.ConnectionError:
-        return "No such domain"
+        return "No such file"
   
-url1 = "google.com"
-url2 = "testphp.vulnweb.com"
-# print(testingSubdomains(url1))
-# print(fetshingFiles(url2))
-print(testingDirectories(url1))
+if len(sys.argv) < 2:
+    print("Please provide a url without the 'www.'")
+else: 
+    target_url = sys.argv[1]
+    print("URL: "+target_url)
+    testingSubdomains(target_url)
+    testingDirectories(target_url)
