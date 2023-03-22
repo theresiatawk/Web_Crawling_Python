@@ -2,6 +2,7 @@ import requests
 import sys
 import re
 
+
 # Initializing empty arrays
 subdomains_output = []
 directories_output = []
@@ -85,6 +86,20 @@ if len(sys.argv) < 2:
 else: 
     target_url = sys.argv[1]
     print("URL: "+target_url)
-    testingSubdomains(target_url)
-    testingDirectories(target_url)
-    fetchingFiles(target_url)
+    # testingSubdomains(target_url)
+    # testingDirectories(target_url)
+    # fetchingFiles(target_url)
+
+# Bonus part
+
+url = "https://requestswebsite.notanothercoder.repl.co/confirm-login"
+
+def send_request(username, password): 
+    form_data = {
+        "username": username,
+        "password": password
+    }
+    response = requests.post(url, data=form_data)
+    print(response.text)
+
+send_request("1","1")
