@@ -13,6 +13,8 @@ files_output = []
 open("./subdomains_output.bat", "w").close()
 open("./directories_output.bat", "w").close()
 open("./files_output.bat", "w").close()
+open("./correct_pass.bat").close()
+open("./password_tries.bat").close()
 
 
 # Function that test for posible existing subdomain for a given domain
