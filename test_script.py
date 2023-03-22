@@ -14,7 +14,7 @@ directories_output = []
 def testingSubdomains(target_url):
     try: 
         requests.get("http://"+target_url)
-        input_file =  open("./input_files/subdomains_dictionary_copy.bat", "r")
+        input_file =  open("./input_files/subdomains_dictionary.bat", "r")
         subdomains_output_file = open("./subdomains_output.bat", "a")
         for line in input_file: 
             subdomain = line.strip()
