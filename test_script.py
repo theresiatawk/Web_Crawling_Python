@@ -2,16 +2,18 @@ import requests
 import sys
 import re
 
-
+# Initializing empty arrays
 subdomains_output = []
 directories_output = []
 files_output = []
 
+# Clearing the content of all the files first
 open("./subdomains_output.bat", "w").close()
 open("./directories_output.bat", "w").close()
 open("./files_output.bat", "w").close()
 
-    
+
+# Function that test for posible existing subdomain for a given domain
 def testingSubdomains(target_url):
     try: 
         requests.get("http://"+target_url)
@@ -39,6 +41,7 @@ def testingSubdomains(target_url):
         print("No such domain")
     return subdomains_output
 
+# Function that test for posible existing directories for a given domain
 def testingDirectories(target_url):
     try:
         requests.get("http://"+target_url)
@@ -47,15 +50,14 @@ def testingDirectories(target_url):
         for line in input_file: 
             directory = line.strip()
             url = target_url +"/"+ directory
-            print(url)
             try:
                 response = requests.get("http://" + url)
                 if response.status_code == 200:
                     directories_output.append(url)
                     directories_output_file.write(url +"\n")
+                    # Fetching the files for each existing subdirectory of the domain
                     print(fetchingFiles(url))
                     print(f"This directory {url} exist !!!!!!!!!!!!!!!")
-                    print(directories_output)
             except requests.exceptions.ConnectionError:
                 pass
         input_file.close()
@@ -64,19 +66,20 @@ def testingDirectories(target_url):
         print("No such directory")
     return directories_output
     
-
+# Function that fetch all the link files of a url using regex
 def fetchingFiles(target_url):
     files_output_file = open("./files_output.bat", "a")
     try:
         response = requests.get("http://"+target_url)
-        links =  re.findall('href="(.*?)"', response.content.decode('utf-8'))
-        for link in links:
+        files_output =  re.findall('href="(.*?)"', response.content.decode('utf-8'))
+        for link in files_output:
             files_output_file.write(link +"\n")
         files_output_file.close()
-        return links
+        return files_output
     except requests.exceptions.ConnectionError:
         return "No such file"
-  
+
+# Checking for arguments
 if len(sys.argv) < 2:
     print("Please provide a url without the 'www.'")
 else: 
@@ -84,3 +87,4 @@ else:
     print("URL: "+target_url)
     testingSubdomains(target_url)
     testingDirectories(target_url)
+    fetchingFiles(target_url)
