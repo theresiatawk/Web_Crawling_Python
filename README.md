@@ -18,6 +18,10 @@ Three Files:
 * directories_output.bat containig all the directories that exist for the target url after running the script.
 * files_output.bat containing all the files and links that exist when fetching the content (html) of the domain and the content (html) of all its existing subdirectories
  using regular expressions. 
+ 
+ Two other files: 
+ * correct_pass.bat containing the correct password once found
+ * password_tries.bat containing all the password trials so they won't be tested again
 
 ## Steps Taken to Complete the Project:
 
@@ -54,10 +58,21 @@ open("filepath", "w")
 **6.** Testing the script: 
 * Test the script on several websites
 
+**7.** Implementing BruteForce:
+* Send a post url request 
+* Use brute force to generate several password to be tested
+* Add the tested password to a file to prevent repeating the test on the same password
+
+
 ## Challenges:
 **1.** One Challenge was the fact that thoroughly testing the code takes a lot of time. The problem was solved by running the code on a smaller test dataset.
 
 **2.** The'requests' library was new to me which made it challenging to utilize and comprehend it. By doing research and figuring out how to use the library efficiently, this problem was solved.
+
+**3.** The bruteforce concept was new to me which made it challenging to utilize and comprehend it. By doing research and figuring out how to use it this problem was solved.
+
+
+
 
 
 
