@@ -22,7 +22,7 @@ def testingSubdomains(target_url):
         input_file =  open("./input_files/subdomains_dictionary.bat", "r")
         subdomains_output_file = open("./subdomains_output.bat", "a")
         for line in input_file: 
-            subdomain = line.strip()
+            subdomain = re.sub(r"^\s+|\s+$", ""+line)
             if subdomain[len(subdomain)-1] == "." :
                 url = subdomain +""+ target_url
             else:
@@ -50,7 +50,7 @@ def testingDirectories(target_url):
         input_file =  open("./input_files/dirs_dictionary.bat", "r")
         directories_output_file = open("./directories_output.bat", "a")
         for line in input_file: 
-            directory = line.strip()
+            directory = re.sub(r"^\s+|\s+$", ""+line)
             url = target_url +"/"+ directory
             try:
                 response = requests.get("http://" + url)
@@ -87,17 +87,25 @@ if len(sys.argv) < 2:
 else: 
     target_url = sys.argv[1]
     print("URL: "+target_url)
-    # testingSubdomains(target_url)
-    # testingDirectories(target_url)
-    # fetchingFiles(target_url)
+    testingSubdomains(target_url)
+    testingDirectories(target_url)
+    fetchingFiles(target_url)
 
-# Bonus part
+# Bonus part:
 
+
+# This is the url used for testing
 url = "https://requestswebsite.notanothercoder.repl.co/confirm-login"
-chars = "abcdefghijklmnopqrstuvwxyz0123456789"
+
+# All the characters we are using to generate a password
+chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()[]\{\}\\\.\""
+
+# The actual username for the link I am using
 username="admin"
 
+#The actual password is "12"
 
+#Function that will send a post request to the target website and return the reponse
 def send_request(username, password): 
     form_data = {
         "username": username,
@@ -106,7 +114,7 @@ def send_request(username, password):
     response = requests.post(url, data=form_data)
     return response
 
-
+# Function that generate passwords to be sent and tested in the target url
 def password_generator():
     while True:
         valid = False
