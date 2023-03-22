@@ -1,6 +1,7 @@
 import requests
 import sys
 import re
+from urllib.parse import urljoin
 
 if len(sys.argv) < 2:
     print("Please provide the url")
@@ -40,16 +41,20 @@ def testingSubdomains(target_url):
     return subdomains_output
 
 def fetshingHTMLFiles(target_url):
-    files_output_file = open("./subdomains_output.bat", "a")
+    files_output_file = open("./files_output.bat", "a")
     try:
         response = requests.get("http://"+target_url)
         links =  re.findall('href="(.*?)"', response.content.decode('utf-8'))
         for link in links: 
+            print(link)
+            link = urljoin(target_url)
             files_output_file.write(link +"\n")
         files_output_file.close()
+        return links
     except requests.exceptions.ConnectionError:
         return "No such domain"
 
+    
 url1 = "google.com"
 url2 = "testphp.vulnweb.com"
 # print(testingSubdomains(url2))
