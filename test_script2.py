@@ -11,39 +11,33 @@ subdomains_output = []
 directories_output = []
 
 def testingSubdomains(target_url):
-    with open("./input_files/subdomains_dictionary_copy.bat") as file:
-        count = 0
-        for line in file: 
-            count += 1 
-            subdomain = line.strip()
-            if count == 100:
-                break
-            url = ""
-            if subdomain[len(url)-1] == "." :
-                url = subdomain +""+ target_url
-            else:
-                url = subdomain +"."+ target_url
-            print(url)
-            try: 
-                response = requests.get("http://" + url)
-                if response.status_code == 200:
-                    subdomains_output.append(url)
-            except requests.exceptions.Timeout:
-                print(f"Connection to {subdomain}.{url} timed out.")
-            except requests.exceptions.RequestException as e:
-                print(f"An error occurred while connecting to {subdomain}.{url}: {e}")
-            if response != "":
-                # print("Subdomain found: " + ", ".join([res.decode() for res in response]))                
-                subdomains_output.append(url)
-                print(subdomains_output)
-
-    with open("./subdomains_output.bat", "a") as subdomains_file:
-        for element in subdomains_output:
-            subdomains_file.write(element +"\n")
-    
+    try: 
+        requests.get("https://"+target_url)
+        with open("./input_files/subdomains_dictionary_copy.bat") as file:
+            for line in file: 
+                subdomain = line.strip()
+                url = ""
+                if subdomain[len(url)-1] == "." :
+                    url = subdomain +""+ target_url
+                else:
+                    url = subdomain +"."+ target_url
+                print(url)
+                try: 
+                    response = requests.get("http://" + url)
+                    if response.status_code == 200:
+                        subdomains_output.append(url)
+                        print(f"This subdomain exist {url} !!!!!!!!!!!!!!!")
+                        print(subdomains_output)
+                except requests.exceptions.ConnectionError:
+                    pass
+        with open("./subdomains_output.bat", "a") as subdomains_file:
+            for element in subdomains_output:
+                subdomains_file.write(element +"\n")
+    except requests.exceptions.ConnectionError:
+        print("No such domain")
     return subdomains_output
 
-url = "testphp.vulnweb.com"
+url = "google.com"
 
 print(testingSubdomains(url))
 print(requests.get("https://" + url))
