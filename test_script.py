@@ -39,15 +39,15 @@ def testingSubdomains(target_url):
         print("No such domain")
     return subdomains_output
 
-def fetshingHTML(target_url):
+def fetshingHTMLFiles(target_url):
     try:
         response = requests.get("http://"+target_url)
-        return re.findall('(href=")(.*?)"', response.content)
+        return re.findall('(href=")(.*?)"', response.content.decode('utf-8'))
     except requests.exceptions.ConnectionError:
         print("No such domain")
 
 url1 = "google.com"
 url2 = "testphp.vulnweb.com"
 # print(testingSubdomains(url2))
-fetshingHTML(url2)
+print(fetshingHTMLFiles(url2))
 # print(requests.get("https://" + url))
