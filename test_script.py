@@ -40,11 +40,15 @@ def testingSubdomains(target_url):
     return subdomains_output
 
 def fetshingHTMLFiles(target_url):
+    files_output_file = open("./subdomains_output.bat", "a")
     try:
         response = requests.get("http://"+target_url)
-        return re.findall('(href=")(.*?)"', response.content.decode('utf-8'))
+        links =  re.findall('href="(.*?)"', response.content.decode('utf-8'))
+        for link in links: 
+            files_output_file.write(link +"\n")
+        files_output_file.close()
     except requests.exceptions.ConnectionError:
-        print("No such domain")
+        return "No such domain"
 
 url1 = "google.com"
 url2 = "testphp.vulnweb.com"
